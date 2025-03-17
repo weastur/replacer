@@ -52,7 +52,8 @@ for everyone. Please follow the guidelines below to ensure a smooth contribution
 
 ## 6. Reporting Issues
 
-If you find bugs or have feature requests, please [open an issue](https://github.com/weastur/replacer/issues) with relevant details.
+If you find bugs or have feature requests, please
+[open an issue](https://github.com/weastur/replacer/issues) with relevant details.
 
 ---
 
