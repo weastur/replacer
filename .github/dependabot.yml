@@ -1,0 +1,33 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    reviewers:
+      - "weastur"
+    assignees:
+      - "weastur"
+    labels:
+      - "dependabot"
+      - "needs triage"
+    pull-request-branch-name:
+      separator: "-"
+    commit-message:
+      prefix: "[deps-gh-actions] "
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "gomod"
+    directory: "/"
+    reviewers:
+      - "weastur"
+    assignees:
+      - "weastur"
+    labels:
+      - "dependabot"
+      - "needs triage"
+    pull-request-branch-name:
+      separator: "-"
+    commit-message:
+      prefix: "[deps-go] "
+    schedule:
+      interval: "weekly"
