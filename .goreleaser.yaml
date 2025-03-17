@@ -1,0 +1,94 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
+---
+version: 2
+
+before:
+  hooks:
+    - make clean
+    - go mod tidy
+    - make build
+
+metadata:
+  mod_timestamp: "{{ .CommitTimestamp }}"
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+      - freebsd
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - formats: ["tar.gz"]
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        formats: ["zip"]
+    builds_info:
+      group: root
+      owner: root
+      mtime: "{{ .CommitDate }}"
+    files:
+      - src: README.md
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+      - src: LICENSE
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+      - src: SECURITY.md
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+      - src: AUTHORS
+        info:
+          owner: root
+          group: root
+          mtime: "{{ .CommitDate }}"
+
+nfpms:
+  - maintainer: Pavel Sapezhka <me@weastur.com>
+    description: >-
+      Replacer is a go generator to find-and-replace in go source files.
+    homepage: https://github.com/weastur/go-gen-replacer
+    license: MPL-2.0
+    bindir: /usr/bin
+    section: utils
+    mtime: "{{ .CommitDate }}"
+    contents:
+      - src: ./LICENSE
+        dst: /usr/share/doc/go-gen-replacer/copyright
+        file_info:
+          mode: 0644
+          mtime: "{{ .CommitDate }}"
+    formats:
+      - deb
+      - rpm
+      - apk
+    rpm:
+      summary: Replacer go generator
+    deb:
+      lintian_overrides:
+        - statically-linked-binary
+
+changelog:
+  use: github-native
+
+release:
+  draft: true
