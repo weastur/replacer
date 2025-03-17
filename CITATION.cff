@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Go generator 'replacer'"
+version: "v0.0.0-dev0"
+type: software
+authors:
+  - family-names: "Sapezhka"
+    given-names: "Pavel"
+doi: 10.5281/zenodo.1234
+date-released: 2025-03-17
+url: "https://github.com/weastur/go-gen-replacer"
+repository-code: "https://github.com/weastur/go-gen-replacer"
+abstract: >-
+  Replacer is a go generator to find-and-replace in go source files.
+keywords:
+  - go
+  - go-generate
+  - code-generation
+license: MPL-2.0
