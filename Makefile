@@ -8,7 +8,7 @@ ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 build: ## Build the binary
 	@mkdir -p $(BIN_DIR)
-	CGO_ENABLED=0 go build -tags netgo,static_build,osusergo,feature -ldflags "-extldflags "-static" -X github.com/weastur/go-gen-replacer/cmd/replacer.version=v0.0.0-dev0" -gcflags=all="-N -l" -o $(BIN_DIR)/$(BINARY_NAME)
+	CGO_ENABLED=0 go build -tags netgo,static_build,osusergo,feature -ldflags "-extldflags "-static" -X github.com/weastur/go-gen-replacer/cmd/replacer/main.version=v0.0.0-dev0" -gcflags=all="-N -l" -o $(BIN_DIR)/$(BINARY_NAME) cmd/replacer/main.go
 
 clean: ## Cleanup
 	@rm -rf $(DIST_DIR)
