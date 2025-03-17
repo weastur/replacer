@@ -6,7 +6,7 @@ import (
 	"github.com/weastur/go-gen-replacer/internal/generator"
 )
 
-var version = "v0.0.0-dev0"
+var version = "v0.0.0-dev0" //nolint:unused
 
 func main() {
 	fmt.Println("Running my generator...")
