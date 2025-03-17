@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 title: "Go generator 'replacer'"
-version: "v0.0.0-dev0"
+version: "v0.0.0-dev1"
 type: software
 authors:
   - family-names: "Sapezhka"

@@ -6,7 +6,7 @@ import (
 	"github.com/weastur/replacer/internal/generator"
 )
 
-var version = "v0.0.0-dev0" //nolint:unused
+var version = "v0.0.0-dev1" //nolint:unused
 
 func main() {
 	fmt.Println("Running my generator...")
