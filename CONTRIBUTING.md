@@ -8,8 +8,8 @@ for everyone. Please follow the guidelines below to ensure a smooth contribution
 1. **Fork the Repository** – Click the fork button on GitHub and clone your fork locally:
 
    ```sh
-   git clone https://github.com/weastur/go-gen-replacer.git
-   cd go-gen-replacer
+   git clone https://github.com/weastur/replacer.git
+   cd replacer
    ```
 
 2. **Use make** – The project is using self-describing makefile:
@@ -52,7 +52,7 @@ for everyone. Please follow the guidelines below to ensure a smooth contribution
 
 ## 6. Reporting Issues
 
-If you find bugs or have feature requests, please [open an issue](https://github.com/weastur/go-gen-replacer/issues) with relevant details.
+If you find bugs or have feature requests, please [open an issue](https://github.com/weastur/replacer/issues) with relevant details.
 
 ---
 

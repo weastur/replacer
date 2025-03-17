@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/weastur/go-gen-replacer/internal/generator"
+	"github.com/weastur/replacer/internal/generator"
 )
 
 var version = "v0.0.0-dev0" //nolint:unused

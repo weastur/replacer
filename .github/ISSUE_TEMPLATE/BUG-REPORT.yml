@@ -3,7 +3,7 @@ name: "Bug Report"
 description: File a bug/issue
 title: "[BUG] - <title>"
 labels: ["bug", "needs triage"]
-projects: ["weastur/go-gen-replacer"]
+projects: ["weastur/replacer"]
 assignees:
   - weastur
 body:

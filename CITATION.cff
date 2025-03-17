@@ -8,8 +8,8 @@ authors:
     given-names: "Pavel"
 doi: 10.5281/zenodo.1234
 date-released: 2025-03-17
-url: "https://github.com/weastur/go-gen-replacer"
-repository-code: "https://github.com/weastur/go-gen-replacer"
+url: "https://github.com/weastur/replacer"
+repository-code: "https://github.com/weastur/replacer"
 abstract: >-
   Replacer is a go generator to find-and-replace in go source files.
 keywords:
