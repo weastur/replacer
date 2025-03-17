@@ -1,0 +1,51 @@
+---
+run:
+  modules-download-mode: readonly
+linters:
+  enable-all: true
+  disable:
+    - exhaustruct
+    - gochecknoglobals
+    - gochecknoinits
+    - ireturn
+    - testpackage
+    - tenv
+    - gci
+    - godot
+    - wrapcheck
+    - reassign
+    - godox
+    - dupl
+
+linters-settings:
+  depguard:
+    rules:
+      main:
+        list-mode: strict
+        allow:
+          - $gostd
+          - github.com/weastur
+        deny:
+          - pkg: "math/rand$"
+            desc: use math/rand/v2
+  varnamelen:
+    ignore-decls:
+      - t testing.T
+      - e error
+      - i int
+      - T any
+      - w http.ResponseWriter
+      - r *http.Request
+      - wg sync.WaitGroup
+  forbidigo:
+    forbid:
+      - ^print(ln)?$
+    exclude-godoc-examples: true
+    analyze-types: true
+  paralleltest:
+    ignore-missing: true
+    ignore-missing-subtests: true
+  wsl:
+    allow-cuddle-with-calls:
+      - Done
+      - Add
