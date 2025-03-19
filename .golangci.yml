@@ -24,6 +24,7 @@ linters-settings:
         allow:
           - $gostd
           - github.com/weastur
+          - github.com/goccy/go-yaml
         deny:
           - pkg: "math/rand$"
             desc: use math/rand/v2

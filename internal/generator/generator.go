@@ -2,8 +2,10 @@ package generator
 
 import (
 	"fmt"
+
+	"github.com/weastur/replacer/internal/config"
 )
 
-func Run() {
-	fmt.Println("Generating code...")
+func Run(cfg *config.Config) {
+	fmt.Println(*cfg)
 }

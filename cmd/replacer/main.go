@@ -54,6 +54,12 @@ func main() {
 
 	fmt.Printf("Using config file: %s\n", configPath)
 
+	cfg, err := config.Load(configPath)
+	if err != nil {
+		fmt.Printf("Error loading the config file: %s\n", err)
+		os.Exit(FailCode)
+	}
+
 	fmt.Println("Running my generator...")
-	generator.Run()
+	generator.Run(cfg)
 }
