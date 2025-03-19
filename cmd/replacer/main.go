@@ -19,6 +19,15 @@ func init() {
 
 func main() {
 	versionFlag := flag.Bool("version", false, "Print the version and exit")
+	flag.String(
+		"config",
+		"",
+		"Path to the configuration file (empty by default).\n"+
+			"If not provided, the generator will look for a config file (\".replacer.yml\") "+
+			"in the current directory, then move up to each parent directory until it reaches the root (the directory "+
+			"containing go.mod).\nIf no config file is found, the generator will do nothing and exit with 0 code",
+	)
+
 	flag.Parse()
 
 	if *versionFlag {
