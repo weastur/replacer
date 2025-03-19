@@ -1,12 +1,16 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
 
+	"github.com/weastur/replacer/internal/config"
 	"github.com/weastur/replacer/internal/generator"
 )
+
+const FailCode = 1
 
 var version = "v0.0.0-dev1"
 
@@ -24,7 +28,7 @@ func init() {
 
 func main() {
 	versionFlag := flag.Bool("version", false, "Print the version and exit")
-	flag.String(
+	configFlag := flag.String(
 		"config",
 		"",
 		"Path to the configuration file.\n"+
@@ -39,6 +43,16 @@ func main() {
 		fmt.Println(version)
 		os.Exit(0)
 	}
+
+	configPath, err := config.Lookup(*configFlag)
+	if errors.Is(err, config.ErrNotFound) {
+		os.Exit(0)
+	} else if err != nil {
+		fmt.Printf("Error looking up the config file: %s\n", err)
+		os.Exit(FailCode)
+	}
+
+	fmt.Printf("Using config file: %s\n", configPath)
 
 	fmt.Println("Running my generator...")
 	generator.Run()

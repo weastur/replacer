@@ -12,7 +12,6 @@ linters:
     - tenv
     - gci
     - godot
-    - wrapcheck
     - reassign
     - godox
     - dupl
