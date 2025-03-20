@@ -38,6 +38,17 @@ run `go generate`, which is a part of my build pipeline, and get:
 // @Header       all {int} X-Ratelimit-Reset "Rate limit reset interval in seconds"
 ```
 
+### Why not use `sed` or `awk`?
+
+In short, it's hard to maintain when you have a lot of transformations, rules look
+more complicated. Also, there is a huge issues with multi-platform support. Even,
+unix-like macos and linux have different versions of `sed` and `awk`.
+
+### IDE's snippets?
+
+IDE's snippets are great, but it's hard to maintain them in a team.
+Also, it's hard to share them between different IDE's.
+
 ## Features
 
 - Full-featured regex ([docs](https://pkg.go.dev/regexp))
