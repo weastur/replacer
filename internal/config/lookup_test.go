@@ -32,6 +32,29 @@ func TestLookup(t *testing.T) {
 		}
 	})
 
+	t.Run("Error in getwd", func(t *testing.T) {
+		tempDir := t.TempDir()
+
+		tempFile := filepath.Join(tempDir, ".replacer.yml")
+		if err := os.WriteFile(tempFile, []byte("test"), 0o644); err != nil {
+			t.Fatalf("Failed to create temp file: %v", err)
+		}
+
+		originalDir, _ := os.Getwd()
+		defer t.Chdir(originalDir)
+		t.Chdir(tempDir)
+
+		if err := os.RemoveAll(tempDir); err != nil {
+			t.Fatalf("Failed to remove directory: %v", err)
+		}
+
+		_, err := Lookup("")
+
+		if !errors.Is(err, ErrNotFound) {
+			t.Errorf("Expected ErrNotFound, got %v", err)
+		}
+	})
+
 	for _, fileName := range []string{".replacer.yml", ".replacer.yaml"} {
 		t.Run("Search for config file in current directory: "+fileName, func(t *testing.T) {
 			tempDir := t.TempDir()
