@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/goccy/go-yaml"
@@ -61,6 +62,10 @@ repl: "replacement"
 		if !errors.As(err, &missingFieldErr) || missingFieldErr.Field != "regex" {
 			t.Errorf("Expected MissingRequiredFieldError for 'regex', got %v", err)
 		}
+
+		if !strings.Contains(missingFieldErr.Error(), "regex") {
+			t.Errorf("Expected error message to contain 'regex', got %v", missingFieldErr.Error())
+		}
 	})
 
 	t.Run("Missing repl field", func(t *testing.T) {
@@ -78,6 +83,10 @@ regex: "^test.*"
 		var missingFieldErr *MissingRequiredFieldError
 		if !errors.As(err, &missingFieldErr) || missingFieldErr.Field != "repl" {
 			t.Errorf("Expected MissingRequiredFieldError for 'repl', got %v", err)
+		}
+
+		if !strings.Contains(missingFieldErr.Error(), "repl") {
+			t.Errorf("Expected error message to contain 'repl', got %v", missingFieldErr.Error())
 		}
 	})
 
