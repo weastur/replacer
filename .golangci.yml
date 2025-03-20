@@ -49,3 +49,10 @@ linters-settings:
     allow-cuddle-with-calls:
       - Done
       - Add
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - cyclop
+        - funlen
+        - gosec
