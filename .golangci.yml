@@ -56,3 +56,5 @@ issues:
         - cyclop
         - funlen
         - gosec
+        - wrapcheck
+        - varnamelen

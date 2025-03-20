@@ -32,27 +32,29 @@ func TestLookup(t *testing.T) {
 		}
 	})
 
-	t.Run("Search for config file in current directory", func(t *testing.T) {
-		tempDir := t.TempDir()
+	for _, fileName := range []string{".replacer.yml", ".replacer.yaml"} {
+		t.Run("Search for config file in current directory: "+fileName, func(t *testing.T) {
+			tempDir := t.TempDir()
 
-		tempFile := filepath.Join(tempDir, ".replacer.yml")
-		if err := os.WriteFile(tempFile, []byte("test"), 0o644); err != nil {
-			t.Fatalf("Failed to create temp file: %v", err)
-		}
+			tempFile := filepath.Join(tempDir, fileName)
+			if err := os.WriteFile(tempFile, []byte("test"), 0o644); err != nil {
+				t.Fatalf("Failed to create temp file: %v", err)
+			}
 
-		originalDir, _ := os.Getwd()
-		defer t.Chdir(originalDir)
-		t.Chdir(tempDir)
+			originalDir, _ := os.Getwd()
+			defer t.Chdir(originalDir)
+			t.Chdir(tempDir)
 
-		path, err := Lookup("")
-		if err != nil {
-			t.Errorf("Expected no error, got %v", err)
-		}
+			path, err := Lookup("")
+			if err != nil {
+				t.Errorf("Expected no error, got %v", err)
+			}
 
-		if path != tempFile {
-			t.Errorf("Expected path %s, got %s", tempFile, path)
-		}
-	})
+			if path != tempFile {
+				t.Errorf("Expected path %s, got %s", tempFile, path)
+			}
+		})
+	}
 
 	t.Run("Reach root directory without finding config file", func(t *testing.T) {
 		tempDir := t.TempDir()
