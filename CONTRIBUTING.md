@@ -12,7 +12,25 @@ for everyone. Please follow the guidelines below to ensure a smooth contribution
    cd replacer
    ```
 
-2. **Use make** – The project is using self-describing makefile:
+1. **Install Dependencies**
+
+    - [Go](https://golang.org/dl/)
+    - [direnv](https://direnv.net/) (optional but recommended)
+    - [pre-commit](https://pre-commit.com/) (optional but recommended)
+
+1. **Install pre-commit hooks** – This will ensure your code is formatted and linted before committing:
+
+   ```sh
+   pre-commit install
+   ```
+
+1. **Allow direnv** – If you have direnv installed, allow the `.envrc` file:
+
+   ```sh
+   direnv allow
+   ```
+
+1. **Use make** – The project is using self-describing makefile:
 
    ```sh
    make
