@@ -58,3 +58,4 @@ issues:
         - gosec
         - wrapcheck
         - varnamelen
+        - gocognit
