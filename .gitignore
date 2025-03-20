@@ -26,6 +26,7 @@ go.work.sum
 
 /bin/
 /coverage.txt
+/coverage.html
 dist/
 
 .replacer.yml
