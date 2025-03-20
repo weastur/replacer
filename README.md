@@ -51,7 +51,7 @@ Also, it's hard to share them between different IDE's.
 
 ## Features
 
-- Full-featured regex ([docs](https://pkg.go.dev/regexp))
+- Full-featured regex ([docs](https://pkg.go.dev/regexp)), including [expands](https://pkg.go.dev/regexp#Regexp.Expand)
 - Automatically searches for a configuration file (`.replacer.yml` or `.replacer.yaml`)
     in the current directory and parent directories.
 - Stops searching at the root directory or when a `go.mod` file is encountered.
@@ -74,14 +74,18 @@ Of course, you can also download the binary from the [releases page](https://git
     or in the directory where you want to run `replacer`.
 
     ```yaml
+    ---
     rules:
-    - regex: '(?m)^// MY RULE$'
-        repl: |-
+    - regex: '(?m)^\/\/ MY RULE$'
+      repl: |-
         // MY NEW AWESOME
         // MULTI-LINE REPLACEMENT
-    - regex: '(?m)^// MY 2d RULE$'
-        repl: |-
-        // ANOTHER REPLACEMENT
+    - regex: '(?m)^\/\/ MY 2 RULE$'
+      repl: |-
+        // REPLACEMENT No2
+    - regex: '(?m)^\/\/ (?P<group>\w+) are also work$'
+      repl: |-
+        // ${group} are great
     ```
 
 1. Add a `//go:generate` directive to your source file.
