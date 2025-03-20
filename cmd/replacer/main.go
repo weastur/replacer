@@ -12,7 +12,7 @@ import (
 
 const FailCode = 1
 
-var version = "v0.0.0-dev1"
+var version = "v0.0.0-dev2"
 
 func init() {
 	flag.Usage = func() {
