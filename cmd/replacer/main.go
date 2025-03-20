@@ -60,6 +60,8 @@ func main() {
 		os.Exit(FailCode)
 	}
 
-	fmt.Println("Running my generator...")
-	generator.Run(cfg)
+	if err := generator.Run(cfg); err != nil {
+		fmt.Printf("Error running the generator: %s\n", err)
+		os.Exit(FailCode)
+	}
 }
