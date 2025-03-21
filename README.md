@@ -89,6 +89,9 @@ Of course, you can also download the binary from the [releases page](https://git
     ```
 
 1. Add a `//go:generate` directive to your source file.
+    Despite [config search mechanism](#configuration-file-search), the transformation
+    rules will be applied **only** to the file
+    where the directive is placed.
 
     ```go
     //go:generate replacer
