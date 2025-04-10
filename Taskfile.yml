@@ -10,7 +10,7 @@ tasks:
     env:
       CGO_ENABLED: 0
     cmds:
-      - go build {{.BUILD_FLAGS}} -o replacer{{exeExt}}
+      - go build {{.BUILD_FLAGS}} -o replacer{{exeExt}} ./cmd/replacer
     sources:
       - ./**/*.go
     generates:
