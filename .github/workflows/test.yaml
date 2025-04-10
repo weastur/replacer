@@ -18,11 +18,16 @@ jobs:
         with:
           go-version: "1.24.1"
 
+      - name: Install Task
+        uses: arduino/setup-task@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build
-        run: make build
+        run: task build
 
       - name: Unit tests
-        run: make unit-tests-cov
+        run: task test-with-race
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5

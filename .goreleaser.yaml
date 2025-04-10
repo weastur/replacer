@@ -5,9 +5,9 @@ version: 2
 
 before:
   hooks:
-    - make clean
+    - task clean
     - go mod tidy
-    - make build
+    - task build
 
 metadata:
   mod_timestamp: "{{ .CommitTimestamp }}"

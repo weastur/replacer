@@ -12,10 +12,10 @@ for everyone. Please follow the guidelines below to ensure a smooth contribution
    cd replacer
    ```
 
-1. **Use make** – The project is using self-describing makefile:
+2. **Use go-task** – The project is using [Taskfile](https://taskfile.dev/):
 
    ```sh
-   make
+   task
    ```
 
 ## 2. Making Changes
