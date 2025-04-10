@@ -22,6 +22,11 @@ jobs:
         with:
           go-version: stable
 
+      - name: Install Task
+        uses: arduino/setup-task@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v7
         with:

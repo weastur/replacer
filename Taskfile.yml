@@ -1,0 +1,97 @@
+version: "3"
+
+vars:
+  BUILD_FLAGS: '-tags netgo,static_build,osusergo,feature -ldflags "-extldflags "-static" -X github.com/weastur/replacer/cmd/replacer/main.version=v0.0.0-dev" -gcflags=all="-N -l"'
+  GOLANGCI_LINT_VERSION: "v2.0.2"
+
+tasks:
+  build:
+    desc: Build the binary
+    env:
+      CGO_ENABLED: 0
+    cmds:
+      - go build {{.BUILD_FLAGS}} -o replacer{{exeExt}} ./cmd/replacer
+    sources:
+      - ./**/*.go
+    generates:
+      - replacer{{exeExt}}
+
+  test:
+    desc: Run tests
+    env:
+      CGO_ENABLED: 0
+    cmds:
+      - go test {{.BUILD_FLAGS}} -v -coverpkg=./internal/... -coverprofile=coverage.txt ./...
+      - go tool cover -html=coverage.txt -o coverage.html
+    sources:
+      - ./**/*.go
+    generates:
+      - coverage.txt
+      - coverage.html
+
+  fmt:
+    desc: Format the code
+    cmds:
+      - golangci-lint fmt
+    sources:
+      - ./**/*.go
+
+  lint:
+    desc: Run linters
+    cmds:
+      - golangci-lint run
+    sources:
+      - ./**/*.go
+
+  lint-autofix:
+    desc: Run linters with autofix (if possible)
+    cmds:
+      - golangci-lint run --fix
+    sources:
+      - ./**/*.go
+
+  test-with-race:
+    desc: Run tests
+    cmds:
+      - go test {{.BUILD_FLAGS}} -race -v -coverpkg=./internal/... -coverprofile=coverage.txt ./...
+      - go tool cover -html=coverage.txt -o coverage.html
+    sources:
+      - ./**/*.go
+    generates:
+      - coverage.txt
+      - coverage.html
+
+  install-deps:
+    desc: Install deps
+    cmds:
+      - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $(go env GOPATH)/bin {{.GOLANGCI_LINT_VERSION}}
+    silent: true
+
+  clean:windows:
+    internal: true
+    cmds:
+      - powershell -Command "try { Remove-Item -Force replacer.exe -ErrorAction Stop } catch [System.Management.Automation.ItemNotFoundException] { exit 0 }"
+      - powershell -Command "try { Remove-Item -Force coverage.txt -ErrorAction Stop } catch [System.Management.Automation.ItemNotFoundException] { exit 0 }"
+      - powershell -Command "try { Remove-Item -Force coverage.html -ErrorAction Stop } catch [System.Management.Automation.ItemNotFoundException] { exit 0 }"
+      - powershell -Command "try { Remove-Item -Force -Recurse dist -ErrorAction Stop } catch [System.Management.Automation.ItemNotFoundException] { exit 0 }"
+    platforms: [windows]
+    silent: true
+
+  clean:unix:
+    internal: true
+    cmds:
+      - rm -f replacer{{exeExt}}
+      - rm -f coverage.txt
+      - rm -f coverage.html
+      - rm -rf dist/
+    platforms: [linux, darwin]
+    silent: true
+
+  clean:
+    desc: Clean the project
+    deps:
+      - clean:windows
+      - clean:unix
+    cmds:
+      - go clean -cache -testcache
+    silent: true

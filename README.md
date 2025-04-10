@@ -134,8 +134,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for information on how to contribute to `
 # fork/clone the repository
 # install go
 # put some config in .replacer.yml
-make build
-make test
+task build
+task test
 GOFILE=my-test-file.go replacer
 # commit/push/PR
 ```

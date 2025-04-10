@@ -6,7 +6,7 @@
       "type": "go",
       "request": "launch",
       "mode": "exec",
-      "program": "${workspaceFolder}/bin/replacer",
+      "program": "${workspaceFolder}/replacer",
       "args": [
         "ensure"
       ],
