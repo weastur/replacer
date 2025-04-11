@@ -1,13 +1,119 @@
-package config
+package main
 
 import (
 	"errors"
+	"io/fs"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
 	"github.com/goccy/go-yaml"
 )
+
+func TestLookup(t *testing.T) {
+	t.Run("Valid file path", func(t *testing.T) {
+		tempFile, err := os.CreateTemp(t.TempDir(), "test-config.yml")
+		if err != nil {
+			t.Fatalf("Failed to create temp file: %v", err)
+		}
+		defer os.Remove(tempFile.Name())
+
+		path, err := LookupConfig(tempFile.Name())
+		if err != nil {
+			t.Errorf("Expected no error, got %v", err)
+		}
+
+		if path != tempFile.Name() {
+			t.Errorf("Expected path %s, got %s", tempFile.Name(), path)
+		}
+	})
+
+	t.Run("Invalid file path", func(t *testing.T) {
+		_, err := LookupConfig("/invalid/path/to/config.yml")
+		if !errors.Is(err, fs.ErrNotExist) {
+			t.Errorf("Expected ErrNotFound, got %v", err)
+		}
+	})
+
+	t.Run("Error in getwd", func(t *testing.T) {
+		tempDir := t.TempDir()
+
+		tempFile := filepath.Join(tempDir, ".replacer.yml")
+		if err := os.WriteFile(tempFile, []byte("test"), 0o644); err != nil {
+			t.Fatalf("Failed to create temp file: %v", err)
+		}
+
+		originalDir, _ := os.Getwd()
+		defer t.Chdir(originalDir)
+		t.Chdir(tempDir)
+
+		if err := os.RemoveAll(tempDir); err != nil {
+			t.Fatalf("Failed to remove directory: %v", err)
+		}
+
+		_, err := LookupConfig("")
+
+		if err == nil {
+			t.Error("Expected error")
+		}
+	})
+
+	for _, fileName := range []string{".replacer.yml", ".replacer.yaml"} {
+		t.Run("Search for config file in current directory: "+fileName, func(t *testing.T) {
+			tempDir := t.TempDir()
+
+			tempFile := filepath.Join(tempDir, fileName)
+			if err := os.WriteFile(tempFile, []byte("test"), 0o644); err != nil {
+				t.Fatalf("Failed to create temp file: %v", err)
+			}
+
+			originalDir, _ := os.Getwd()
+			defer t.Chdir(originalDir)
+			t.Chdir(tempDir)
+
+			path, err := LookupConfig("")
+			if err != nil {
+				t.Errorf("Expected no error, got %v", err)
+			}
+
+			if path != tempFile {
+				t.Errorf("Expected path %s, got %s", tempFile, path)
+			}
+		})
+	}
+
+	t.Run("Reach root directory without finding config file", func(t *testing.T) {
+		tempDir := t.TempDir()
+
+		originalDir, _ := os.Getwd()
+		defer t.Chdir(originalDir)
+		t.Chdir(tempDir)
+
+		_, err := LookupConfig("")
+		if !errors.Is(err, ErrNotFound) {
+			t.Errorf("Expected ErrNotFound, got %v", err)
+		}
+	})
+
+	t.Run("Encounter go.mod without finding config file", func(t *testing.T) {
+		tempDir := t.TempDir()
+
+		goModFile := filepath.Join(tempDir, "go.mod")
+		if err := os.WriteFile(goModFile, []byte("module test"), 0o644); err != nil {
+			t.Fatalf("Failed to create go.mod file: %v", err)
+		}
+
+		originalDir, _ := os.Getwd()
+		defer t.Chdir(originalDir)
+		t.Chdir(tempDir)
+
+		_, err := LookupConfig("")
+		if !errors.Is(err, ErrNotFound) {
+			t.Errorf("Expected ErrNotFound, got %v", err)
+		}
+	})
+}
 
 func TestRule_UnmarshalYAML(t *testing.T) {
 	t.Run("Invalid yaml", func(t *testing.T) {
@@ -128,15 +234,15 @@ rules:
 
 		tempFile.Close()
 
-		if _, err = Load(tempFile.Name()); err != nil {
+		if _, err = LoadConfig(tempFile.Name()); err != nil {
 			t.Fatalf("Expected no error, got %v", err)
 		}
 	})
 
 	t.Run("File does not exist", func(t *testing.T) {
-		_, err := Load("nonexistent.yml")
-		if err == nil {
-			t.Fatal("Expected error, got nil")
+		_, err := LoadConfig("nonexistent.yml")
+		if err == nil || !errors.Is(err, fs.ErrNotExist) {
+			t.Fatalf("Expected os.ErrNotExist, got %v", err)
 		}
 	})
 
@@ -158,7 +264,7 @@ invalid_yaml
 
 		tempFile.Close()
 
-		_, err = Load(tempFile.Name())
+		_, err = LoadConfig(tempFile.Name())
 		if err == nil {
 			t.Fatal("Expected error, got nil")
 		}
