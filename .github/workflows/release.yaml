@@ -24,6 +24,11 @@ jobs:
         with:
           go-version: 1.24.1
 
+      - name: Install Task
+        uses: arduino/setup-task@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
