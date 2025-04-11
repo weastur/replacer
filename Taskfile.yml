@@ -1,7 +1,7 @@
 version: "3"
 
 vars:
-  BUILD_FLAGS: '-tags netgo,static_build,osusergo,feature -ldflags "-extldflags "-static" -X github.com/weastur/replacer/cmd/replacer/main.version=v0.0.0-dev" -gcflags=all="-N -l"'
+  BUILD_FLAGS: '-tags netgo,static_build,osusergo,feature -ldflags "-extldflags "-static" -X github.com/weastur/replacer/main.version=v0.0.0-dev" -gcflags=all="-N -l"'
   GOLANGCI_LINT_VERSION: "v2.0.2"
 
 tasks:
@@ -10,7 +10,7 @@ tasks:
     env:
       CGO_ENABLED: 0
     cmds:
-      - go build {{.BUILD_FLAGS}} -o replacer{{exeExt}} ./cmd/replacer
+      - go build {{.BUILD_FLAGS}} -o replacer{{exeExt}} ./...
     sources:
       - ./**/*.go
     generates:
@@ -21,7 +21,7 @@ tasks:
     env:
       CGO_ENABLED: 0
     cmds:
-      - go test {{.BUILD_FLAGS}} -v -coverpkg=./internal/... -coverprofile=coverage.txt ./...
+      - go test {{.BUILD_FLAGS}} -v -coverprofile=coverage.txt ./...
       - go tool cover -html=coverage.txt -o coverage.html
     sources:
       - ./**/*.go
@@ -49,17 +49,6 @@ tasks:
       - golangci-lint run --fix
     sources:
       - ./**/*.go
-
-  test-with-race:
-    desc: Run tests
-    cmds:
-      - go test {{.BUILD_FLAGS}} -race -v -coverpkg=./internal/... -coverprofile=coverage.txt ./...
-      - go tool cover -html=coverage.txt -o coverage.html
-    sources:
-      - ./**/*.go
-    generates:
-      - coverage.txt
-      - coverage.html
 
   install-deps:
     desc: Install deps

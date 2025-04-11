@@ -63,7 +63,7 @@ Also, it's hard to share them between different IDE's.
 To install `replacer`, run:
 
 ```bash
-go install github.com/weastur/replacer/cmd/replacer@latest
+go install github.com/weastur/replacer/@latest
 ```
 
 Make sure that `$GOPATH/bin` is in your `$PATH`.
@@ -142,9 +142,9 @@ GOFILE=my-test-file.go replacer
 
 ### Project structure
 
-- `cmd/replacer` - the main command.
-- `internal/config` - handles configuration file parsing and validation.
-- `internal/replacer` - applies regex-based transformations to source files.
+- `main` - the main command.
+- `config` - handles configuration file parsing and validation.
+- `generator` - applies regex-based transformations to source files.
 
 ## Security
 

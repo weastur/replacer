@@ -1,20 +1,20 @@
-package generator
+package main
 
 import (
+	"errors"
+	"io/fs"
 	"os"
 	"regexp"
 	"runtime"
 	"strings"
 	"testing"
-
-	"github.com/weastur/replacer/internal/config"
 )
 
 func TestRun(t *testing.T) {
 	t.Run("GOFILE not set", func(t *testing.T) {
 		os.Unsetenv("GOFILE")
 
-		err := Run(&config.Config{})
+		err := Run(&Config{})
 		if err != nil {
 			t.Fatalf("expected no error, got %v", err)
 		}
@@ -23,8 +23,8 @@ func TestRun(t *testing.T) {
 	t.Run("File does not exist", func(t *testing.T) {
 		t.Setenv("GOFILE", "nonexistent.txt")
 
-		err := Run(&config.Config{})
-		if err == nil || !strings.Contains(err.Error(), "no such file") {
+		err := Run(&Config{})
+		if err == nil || !errors.Is(err, fs.ErrNotExist) {
 			t.Fatalf("expected file not found error, got %v", err)
 		}
 	})
@@ -47,7 +47,7 @@ func TestRun(t *testing.T) {
 
 		t.Setenv("GOFILE", tmpFile.Name())
 
-		err = Run(&config.Config{})
+		err = Run(&Config{})
 		if err == nil || !strings.Contains(err.Error(), "failed to read") {
 			t.Fatalf("expected error, got %v", err)
 		}
@@ -69,8 +69,8 @@ func TestRun(t *testing.T) {
 
 		t.Setenv("GOFILE", tmpFile.Name())
 
-		mockConfig := &config.Config{
-			Rules: []config.Rule{
+		mockConfig := &Config{
+			Rules: []Rule{
 				{
 					Regex: regexp.MustCompile("hello"),
 					Repl:  "hi",
@@ -116,7 +116,7 @@ func TestRun(t *testing.T) {
 			t.Fatalf("failed to chmod file: %v", err)
 		}
 
-		err = Run(&config.Config{})
+		err = Run(&Config{})
 		if err == nil || !strings.Contains(err.Error(), "failed to write") {
 			t.Fatalf("expected error, got %v", err)
 		}
