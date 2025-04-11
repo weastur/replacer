@@ -14,16 +14,14 @@ var (
 	verboseFlag bool
 )
 
-func PrintVerbose(format string, a ...any) (n int, err error) {
+func PrintVerbose(format string, a ...any) {
 	if verboseFlag {
-		return fmt.Fprintf(os.Stderr, format, a...)
+		fmt.Fprintf(os.Stderr, format, a...)
 	}
-
-	return 0, nil
 }
 
-func Print(format string, a ...any) (n int, err error) {
-	return fmt.Fprintf(os.Stderr, format, a...)
+func Print(format string, a ...any) {
+	fmt.Fprintf(os.Stderr, format, a...)
 }
 
 func init() {

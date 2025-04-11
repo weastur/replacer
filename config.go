@@ -58,7 +58,7 @@ func (p *Rule) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	return nil
 }
 
-func LookupConfig(path string) (string, error) {
+func LookupConfig(path string) (string, error) { //nolint:cyclop
 	if path != "" {
 		var err error
 
